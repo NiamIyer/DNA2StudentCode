@@ -16,25 +16,22 @@ public class DNA {
      * TODO: Complete this function, STRCount(), to return longest consecutive run of STR in sequence.
      */
     public static int STRCount(String sequence, String STR) {
-        int max = 0;
-        int curr = 0;
+        long STRHash = hash(STR);
+        int STRlength = 0;
         for (int i = 0; i < sequence.length(); i++) {
-            int k = i;
-            curr = 0;
-            while ((k + STR.length() < sequence.length()) && (sequence.substring(k,k + STR.length()).equals(STR))) {
-                curr ++;
-                k += STR.length();
-                if (k > sequence.length()) {
-                    if (curr > max) {
-                        return curr;
-                    }
-                    return max;
-                }
-            }
-            if (curr > max) {
-                max = curr;
-            }
+
         }
-        return max;
+        return 0;
     }
+
+    public static long hash(String str) {
+        long h = 0;
+        long p = 145366252001L;
+        int r = 256;
+        for (int i = 0; i < str.length(); i++) {
+            h = (h * r + str.charAt(i)) % p;
+        }
+        return h;
+    }
+
 }
