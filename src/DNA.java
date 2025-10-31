@@ -17,11 +17,31 @@ public class DNA {
      */
     public static int STRCount(String sequence, String STR) {
         long STRHash = hash(STR);
-        int STRlength = 0;
-        for (int i = 0; i < sequence.length(); i++) {
-
+        int STRLength = STR.length();
+        int current = 0;
+        int max = 0;
+        boolean running = true;
+        int index = 0;
+        long seqHash = hash(sequence.substring(0, STRLength));
+        for (int i = STRLength; i < sequence.length(); i++) {
+            if (STRHash == seqHash) {
+                current ++;
+                i += STRLength;
+                running = true;
+                index = i;
+            }
+            else if (running && seqHash != STRHash) {
+                i --;
+                if (index == i) {
+                    if (max < current) {
+                        max = current;
+                    }
+                    current = 0;
+                    running = false;
+                }
+            }
         }
-        return 0;
+        return max;
     }
 
     public static long hash(String str) {
