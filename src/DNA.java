@@ -11,6 +11,8 @@
  */
 
 public class DNA {
+    public static long P = 145366252001L;
+    public static int RADIX = 256;
 
     /**
      * TODO: Complete this function, STRCount(), to return longest consecutive run of STR in sequence.
@@ -18,40 +20,40 @@ public class DNA {
     public static int STRCount(String sequence, String STR) {
         long STRHash = hash(STR);
         int STRLength = STR.length();
+        int seqLength = sequence.length();
+        long indexVal = findIndexVal(STRLength);
+        long seqHash = hash(sequence.substring(0, STRLength));
         int current = 0;
         int max = 0;
-        boolean running = true;
-        int index = 0;
-        long seqHash = hash(sequence.substring(0, STRLength));
-        for (int i = STRLength; i < sequence.length(); i++) {
-            if (STRHash == seqHash) {
-                current ++;
+        int i = 0;
+        while (i < seqLength - STRLength) {
+            seqHash = hash(sequence.substring(i, i + STR.length()));
+            if(STRHash == seqHash) {
+                current++;
                 i += STRLength;
-                running = true;
-                index = i;
             }
-            else if (running && seqHash != STRHash) {
-                i --;
-                if (index == i) {
-                    if (max < current) {
-                        max = current;
-                    }
-                    current = 0;
-                    running = false;
+            else {
+                if (current > max) {
+                    max = current;
                 }
+                current = 0;
+                i++;
             }
         }
-        return max;
     }
-
     public static long hash(String str) {
         long h = 0;
-        long p = 145366252001L;
-        int r = 256;
         for (int i = 0; i < str.length(); i++) {
-            h = (h * r + str.charAt(i)) % p;
+            h = (h * RADIX + str.charAt(i)) % P;
         }
         return h;
+    }
+    public static long findIndexVal(int STRLength) {
+        long val = 1;
+        for (int i = 0; i < STRLength; i++) {
+            val = val * RADIX % P;
+        }
+        return val;
     }
 
 }
